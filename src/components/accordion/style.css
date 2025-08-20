@@ -1,0 +1,31 @@
+.acc-wrapper {
+  display: flex;
+  width: 100vw;
+  justify-content: center;
+}
+
+.accordion {
+  width: 500px;
+  margin: 50px;
+}
+
+.acc-item {
+  background: beige;
+  font-size: 17px;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.acc-title {
+  color: #ab2a2a;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 30px;
+}
+
+.acc-content {
+  color: #620e0e;
+  padding-inline: 30px;
+}
