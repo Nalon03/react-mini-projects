@@ -2,11 +2,13 @@
   display: flex;
   width: 100vw;
   justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-block: 70px;
 }
 
 .accordion {
   width: 500px;
-  margin: 50px;
 }
 
 .acc-item {
@@ -23,9 +25,16 @@
   align-items: center;
   justify-content: space-between;
   padding-inline: 30px;
+  cursor: pointer;
 }
 
 .acc-content {
   color: #620e0e;
   padding-inline: 30px;
+}
+
+.multi-button {
+  background: rgb(215, 215, 4);
+  color: #f50d81;
+  margin-bottom: 10px;
 }

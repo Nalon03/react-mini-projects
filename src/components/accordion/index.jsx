@@ -1,37 +1,72 @@
-// single selection
-// multiple selection
-
 import { useState } from "react";
 import data from "./data";
 import "./style.css";
 
 export default function Accordion() {
-  const [selected, setSelected] = useState(null);
+  const [openIds, setOpenIds] = useState([]);
+  const [multi, setMulti] = useState(false);
 
-  function handleSingleSelection(getCurrentItemId) {
-    setSelected(getCurrentItemId === selected ? null : getCurrentItemId);
-  }
+  const isOpen = (id) => openIds.includes(id);
+
+  const toggleId = (id) => {
+    setOpenIds((prev) => {
+      const set = new Set(prev);
+      if (set.has(id)) set.delete(id);
+      else {
+        if (!multi) set.clear();
+
+        set.add(id);
+      }
+      return Array.from(set);
+    });
+  };
+
+  const switchMode = () => {
+    setMulti((prev) => !prev);
+    setOpenIds((prev) => (prev.length > 1 ? [prev[0]] : prev));
+  };
 
   return (
     <div className="acc-wrapper">
-      <div className="accordion">
-        {data && data.length > 0 ? (
-          data.map((item) => (
-            <div key={item.id} className="acc-item">
-              <div
-                className="acc-title"
-                onClick={() => handleSingleSelection(item.id)}
-              >
-                <h3>{item.title}</h3>
-                <span>+</span>
+      <button className="multi-button" onClick={switchMode}>
+        {multi ? "Switch to Single Selection" : "Enable Multiple Selection"}
+      </button>
+
+      <div className="accordion" role="list">
+        {data && data.length ? (
+          data.map((item) => {
+            const open = isOpen(item.id);
+            const contentId = `acc-panel-${item.id}`;
+            const buttonId = `acc-button-${item.id}`;
+
+            return (
+              <div key={item.id} className="acc-item" role="listitem">
+                <div
+                  id={buttonId}
+                  className="acc-title"
+                  aria-expanded={open}
+                  aria-controls={contentId}
+                  onClick={() => toggleId(item.id)}
+                >
+                  <h3>{item.title}</h3>
+                  <span>{open ? "−" : "+"}</span>
+                </div>
+
+                {open && (
+                  <div
+                    id={contentId}
+                    className="acc-content"
+                    role="region"
+                    aria-labelledby={buttonId}
+                  >
+                    {item.content}
+                  </div>
+                )}
               </div>
-              <div className="acc-content">
-                {selected === item.id ? <div>{item.content}</div> : null}
-              </div>
-            </div>
-          ))
+            );
+          })
         ) : (
-          <div>No Accordion Found</div>
+          <div className="acc-content">No Accordion Found</div>
         )}
       </div>
     </div>
